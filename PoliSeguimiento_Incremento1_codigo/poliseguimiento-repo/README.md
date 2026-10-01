@@ -24,20 +24,24 @@ Los radicados de prueba corresponden a dos certificados reales publicados por el
 
 Las fechas de radicación de POL-2026-0417 y POL-2026-0512 son fijas (agosto de 2026), por lo que aparecerán como **retrasadas** si las consultas después de esa fecha: eso es precisamente el comportamiento que la alerta debe mostrar. POL-2026-0603 se radicó pocos días hábiles antes de esta entrega, por lo que se mantendrá **dentro del plazo** durante los primeros días hábiles siguientes; pasado ese margen, también empezará a mostrarse como retrasada, ya que el cálculo siempre se hace contra la fecha real del día en que se ejecuta la aplicación. Para ver ambos comportamientos (con y sin alerta) de forma controlada y permanente, revisa las pruebas automatizadas (`npm test`), que fijan una fecha de referencia específica para cada escenario.
 
-## Cómo ejecutar el proyecto
+## Historia de usuario
+Como estudiante o egresado que radicó una certificación, quiero consultar el estado, el historial y si mi solicitud está dentro del tiempo esperado ingresando su número de radicado, para saber en qué área se encuentra, qué recorrido ha tenido y si debo preocuparme por una demora, sin tener que llamar a una oficina.
 
-```bash
-npm install
-npm start
-```
-
-Luego abre `http://localhost:3000` en el navegador. Radicados de prueba disponibles: `POL-2026-0417` (pendiente, retrasada), `POL-2026-0512` (trasladada, retrasada) y `POL-2026-0603` (en revisión, dentro del plazo).
-
-## Cómo correr las pruebas
-
-```bash
-npm test
-```
+casos/criterios
+Caso principal — radicado válido y existente
+•	Dado que el estudiante o egresado tiene el radicado POL-2026-0417 de una solicitud registrada,
+•	Cuando lo ingresa en el campo de búsqueda y presiona “Consultar”,
+•	Entonces el sistema muestra el nombre del certificado, el área actual (“Decanatura de Facultad”), el estado (“pendiente”) y el historial de movimientos con sus fechas.
+Caso alternativo — radicado escrito en minúsculas
+•	Dado que el estudiante o egresado escribe su radicado en minúsculas (pol-2026-0512),
+•	Cuando presiona “Consultar”,
+•	Entonces el sistema normaliza el texto a mayúsculas y muestra igualmente el estado y el historial correspondientes.
+Caso de la ventana de tiempos — plazo superado 
+•	Dado que una solicitud tiene un plazo esperado de 8 días hábiles y ya lleva 10 días hábiles transcurridos desde su radicación,
+•	Cuando el estudiante o egresado consulta el estado de esa solicitud, Entonces el sistema muestra una alerta visible indicando que el tiempo esperado fue superado, junto con los días transcurridos y los días esperados.
+Caso de error — radicado inexistente o con formato inválido
+•	Dado que el estudiante o egresado ingresa un radicado que no existe en el sistema o que no cumple el formato POL-AAAA-NNNN,
+•	Cuando presiona “Consultar”, Entonces el sistema muestra un mensaje claro indicando que no se encontró la solicitud o que el formato es inválido, sin interrumpir el uso de la aplicación 
 
 ## Estructura del proyecto
 
